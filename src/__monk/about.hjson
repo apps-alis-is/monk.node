@@ -1,0 +1,10 @@
+{
+    "Description": '''
+Monk masternode'''
+    Links: [
+        { 
+            website: "https://monkcoin.net/",
+            explorer: "https://explorer.decenomy.net/MONK/blocks"
+        }
+    ]
+}

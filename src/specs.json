@@ -1,0 +1,8 @@
+{
+    "id": "monk.node" ,
+    "version" : "0.0.1",
+    "dependencies": [
+        { "id":"btc.base" },
+        { "id": "monk.binaries"}
+    ]
+}
