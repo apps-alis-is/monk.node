@@ -26,10 +26,10 @@ local _info = {
 
 local function _exec_monk_cli(...)
     local _arg = {'-datadir=data', ...}
-    local _rpcBind = am.app.get_configuration({'DAEMON_CONFIGURATION', 'rpcbind'})
-    if type(_rpcBind) == 'string' then
-        table.insert(_arg, 1, '-rpcconnect=' .. _rpcBind)
-    end
+    -- local _rpcBind = am.app.get_configuration({'DAEMON_CONFIGURATION', 'rpcbind'})
+    -- if type(_rpcBind) == 'string' then
+    --     table.insert(_arg, 1, '-rpcconnect=' .. _rpcBind)
+    -- end
     local _proc = proc.spawn('bin/monk-cli', _arg, {stdio = {stdout = 'pipe', stderr = 'pipe'}, wait = true})
 
     local _exitcode = _proc.exitcode
