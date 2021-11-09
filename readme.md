@@ -1,6 +1,6 @@
 ### monk.node
 
-CRW node AMI app - runs system, master or gateway node.
+MONK node AMI app.
 
 **All commands should be executed as root or with `sudo`.**
 
@@ -25,7 +25,6 @@ CRW node AMI app - runs system, master or gateway node.
     "user": "monk",
 }
 ```
-*Node types are: `masternode`, `systemnode`.*
 
 1. Run `ami --path=<your app path> setup`
    * e.g. `ami --path=/mns/monk1`
