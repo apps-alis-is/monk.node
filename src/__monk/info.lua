@@ -26,11 +26,11 @@ local _info = {
 
 local function _exec_monk_cli(...)
     local _arg = {'-datadir=data', ...}
-    -- local _rpcBind = am.app.get_configuration({'DAEMON_CONFIGURATION', 'rpcbind'})
-    -- if type(_rpcBind) == 'string' then
-    --     table.insert(_arg, 1, '-rpcconnect=' .. _rpcBind)
-    -- end
-    local _proc = proc.spawn('bin/monk-cli', _arg, {stdio = {stdout = 'pipe', stderr = 'pipe'}, wait = true})
+    local _rpcBind = am.app.get_configuration({'DAEMON_CONFIGURATION', 'rpcbind'})
+    if type(_rpcBind) == 'string' then
+        table.insert(_arg, 1, '-rpcconnect=' .. _rpcBind)
+    end
+    local _proc = proc.spawn(path.combine("bin", am.app.get_model("CLI_NAME")), _arg, {stdio = {stdout = 'pipe', stderr = 'pipe'}, wait = true})
 
     local _exitcode = _proc.exitcode
     local _stdout = _proc.stdoutStream:read('a') or ''
@@ -58,16 +58,17 @@ local function _get_monk_cli_result(exitcode, stdout, stderr)
 end
 
 if _info.monkd == 'running' then
-    -- if am.app.get_configuration("NODE_PRIVKEY") then
-    --     local _exitcode, _stdout, _stderr = _exec_monk_cli("-datadir=data", "masternode", "status")
-    --     local _success, _output = _get_monk_cli_result(_exitcode, _stdout, _stderr)
+    local _nodeType = "node"
+    if am.app.get_configuration("NODE_PRIVKEY") or am.app.get_configuration({"DAEMON_CONFIGURATION", "masternode"})  then
+        _nodeType = "masternode"
+        local _exitcode, _stdout, _stderr = _exec_monk_cli("-datadir=data", "getmasternodestatus")
+        local _success, _output = _get_monk_cli_result(_exitcode, _stdout, _stderr)
 
-    --     _info.status = _output.message
-    --     if not _success or (_info.status ~= 'Masternode successfully started') then
-    --         _info.level = "error"
-    --     end
-    -- end
-
+        _info.status = _output.message
+        if not _success or (_info.status ~= 'Masternode successfully started') then
+            _info.level = "error"
+        end
+    end
     local _exitcode, _stdout, _stderr = _exec_monk_cli('-datadir=data', 'getblockchaininfo')
     local _success, _output = _get_monk_cli_result(_exitcode, _stdout, _stderr)
 
@@ -83,17 +84,15 @@ if _info.monkd == 'running' then
         _info.synced = _output.IsBlockchainSynced
     end
 
-    if not _nodeType then
-        if not _success then
-            _info.status = 'Unknown sync status!'
-            _info.level = 'error'
-        else
-            if _info.synced then
-                _info.status = 'Synced.'
-            else
-                _info.status = 'Syncing'
-                _info.level = 'warn'
-            end
+    if not _success then
+        _info.status = 'Unknown sync status!'
+        _info.level = 'error'
+    else
+        if _info.synced and _nodeType ~= "masternode" then
+            _info.status = 'Synced.'
+        elseif not _info.synced then
+            _info.status = 'Syncing'
+            _info.level = 'warn'
         end
     end
 else
