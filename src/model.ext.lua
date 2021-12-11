@@ -21,7 +21,8 @@ am.app.set_model(
         CLI_NAME = 'monk-cli',
         CONF_NAME = 'monk.conf',
         CONF_SOURCE = '__btc/assets/daemon.conf',
-        SERVICE_NAME = 'monkd'
+        SERVICE_NAME = 'monkd',
+        ABOUT_SOURCE = "__monk/about.hjson"
     },
     {merge = true, overwrite = true}
 )
