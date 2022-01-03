@@ -17,6 +17,10 @@ am.app.set_model(
             masternodeprivkey = am.app.get_configuration('NODE_PRIVKEY'),
             masternode = am.app.get_configuration('NODE_PRIVKEY') and 1 or nil
         },
+        SERVICE_CONFIGURATION = am.app.get_configuration("SERVICE_CONFIGURATION", {
+            StandardOutput = "append:" .. os.cwd() .. "/data/debug.log",
+            StandardError =  "append:" .. os.cwd() .. "/data/debug.log"
+        }),
         DAEMON_NAME = 'monkd',
         CLI_NAME = 'monk-cli',
         CONF_NAME = 'monk.conf',
