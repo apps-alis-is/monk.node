@@ -1,6 +1,6 @@
 am.app.set_model(
     {
-        DAEMON_URL = 'https://github.com/decenomy/MONK/releases/download/v3.0.2.0/MONK-3.0.2.0-Linux.zip'
+        DAEMON_URL = 'https://github.com/decenomy/MONK/releases/download/v3.1.0.0/MONK-3.1.0.0-Linux.zip'
     },
     {merge = true, overwrite = true}
 )
